@@ -2,7 +2,7 @@ import os
 import json
 import re
 import logging
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 from schemas import ScreeningResult
 
@@ -11,8 +11,7 @@ load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 logging.error(f"API KEY LOADED: {api_key[:10] if api_key else 'NOT FOUND'}")
 
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key=api_key)
 
 def screen_resume(job_description: str, resume_text: str) -> ScreeningResult:
     prompt = f"""
@@ -35,7 +34,10 @@ RESUME:
 {resume_text}
 """
     try:
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
         raw = response.text.strip()
         logging.error(f"RAW GEMINI: {raw[:500]}")
 
