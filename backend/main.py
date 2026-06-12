@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pdf_utils import extract_text_from_pdf
 from gemini_service import screen_resume
 from schemas import ScreeningResult
+import logging
 
 app = FastAPI(
     title="AI Resume Screener",
@@ -27,17 +28,25 @@ async def screen_resume_endpoint(
     job_description: str = Form(...),
     resume: UploadFile = File(...)
 ):
-    # Validate file type
-    if resume.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
+    try:
+        logging.error(f"REQUEST RECEIVED - file: {resume.filename}, content_type: {resume.content_type}")
+        
+        if resume.content_type != "application/pdf":
+            raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
 
-    # Read and extract text from PDF
-    pdf_bytes = await resume.read()
-    resume_text = extract_text_from_pdf(pdf_bytes)
+        pdf_bytes = await resume.read()
+        logging.error(f"PDF READ: {len(pdf_bytes)} bytes")
+        
+        resume_text = extract_text_from_pdf(pdf_bytes)
+        logging.error(f"TEXT EXTRACTED: {len(resume_text)} chars")
 
-    if not resume_text:
-        raise HTTPException(status_code=422, detail="Could not extract text from PDF.")
+        if not resume_text:
+            raise HTTPException(status_code=422, detail="Could not extract text from PDF.")
 
-    # Call Gemini
-    result = screen_resume(job_description, resume_text)
-    return result
+        result = screen_resume(job_description, resume_text)
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"ENDPOINT ERROR: {str(e)}")
+        raise
