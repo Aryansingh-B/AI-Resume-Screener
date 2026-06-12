@@ -240,8 +240,8 @@ python-dotenv==1.0.1
 ## 👤 Author
 
 **Aryan Singh Bais**
-GitHub: [github.com/aryansinghbais](https://github.com/aryansinghbais)
-Project: [github.com/aryansinghbais/ai-resume-screener](https://github.com/aryansinghbais/ai-resume-screener)
+GitHub: [github.com/aryansinghbais](https://github.com/Aryansingh-B)
+Project: [github.com/aryansinghbais/ai-resume-screener](https://github.com/Aryansingh-B/AI-Resume-Screener)
 
 ---
 
