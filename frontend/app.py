@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import os
 
-API_URL = os.getenv("API_URL", "https://your-app.up.railway.app")
+API_URL = os.getenv("API_URL", "https://ai-resume-screener-production-132e.up.railway.app")
 
 st.set_page_config(page_title="AI Resume Screener", page_icon="🤖", layout="centered")
 
