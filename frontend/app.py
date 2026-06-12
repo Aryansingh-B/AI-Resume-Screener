@@ -1,5 +1,8 @@
 import streamlit as st
 import requests
+import os
+
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="AI Resume Screener", page_icon="🤖", layout="centered")
 
@@ -25,9 +28,10 @@ if st.button("🔍 Screen Resume", use_container_width=True):
         with st.spinner("Analysing with Gemini AI..."):
             try:
                 response = requests.post(
-                    "http://localhost:8000/screen-resume",
+                    f"{API_URL}/screen-resume",
                     data={"job_description": job_desc},
-                    files={"resume": (resume_file.name, resume_file, "application/pdf")}
+                    files={"resume": (resume_file.name, resume_file, "application/pdf")},
+                    timeout=60
                 )
                 response.raise_for_status()
                 result = response.json()
@@ -58,5 +62,9 @@ if st.button("🔍 Screen Resume", use_container_width=True):
 
             except requests.exceptions.ConnectionError:
                 st.error("❌ Cannot reach the API. Make sure the backend is running on port 8000.")
+            except requests.exceptions.Timeout:
+                st.error("⏱️ Request timed out. Gemini took too long — please try again.")
+            except requests.exceptions.HTTPError as e:
+                st.error(f"🚨 API Error {e.response.status_code}: {e.response.text}")
             except Exception as e:
                 st.error(f"Something went wrong: {e}")
