@@ -1,4 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+import logging
+logging.basicConfig(level=logging.ERROR)
 from fastapi.middleware.cors import CORSMiddleware
 from pdf_utils import extract_text_from_pdf
 from gemini_service import screen_resume
