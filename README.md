@@ -20,7 +20,7 @@ As a data scientist in 2026, knowing how to build and expose AI-powered pipeline
 
 | Layer | Technology |
 |---|---|
-| AI / LLM | Google Gemini 1.5 Flash API |
+| AI / LLM | Google Gemini 2.5 Flash API |
 | Backend API | FastAPI + Uvicorn |
 | PDF Parsing | PyMuPDF (fitz) |
 | Data Validation | Pydantic v2 |
