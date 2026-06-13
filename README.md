@@ -1,4 +1,4 @@
-# 🤖 AI Resume Screener
+# AI Resume Screener
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
@@ -13,17 +13,17 @@
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 | Service | URL |
 |---|---|
-| 🎯 **Streamlit App** | [https://ai-resume-screener-pkfk2an7hcpyiqkvujuefn.streamlit.app/] |
-| ⚡ **FastAPI Swagger** | [https://ai-resume-screener-production-2564.up.railway.app/docs]|
-| 🐙 **GitHub** | [Aryansingh-B/AI-Resume-Screener](https://github.com/Aryansingh-B/AI-Resume-Screener) |
+| **Streamlit App** | [https://ai-resume-screener-pkfk2an7hcpyiqkvujuefn.streamlit.app/] |
+| **FastAPI Swagger** | [https://ai-resume-screener-production-2564.up.railway.app/docs]|
+| **GitHub** | [Aryansingh-B/AI-Resume-Screener](https://github.com/Aryansingh-B/AI-Resume-Screener) |
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 As a data scientist in 2026, knowing how to build and expose AI-powered pipelines is just as important as knowing how to train models. This project demonstrates:
 
@@ -35,7 +35,7 @@ As a data scientist in 2026, knowing how to build and expose AI-powered pipeline
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -49,7 +49,7 @@ As a data scientist in 2026, knowing how to build and expose AI-powered pipeline
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ai-resume-screener/
@@ -73,7 +73,7 @@ ai-resume-screener/
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 
@@ -113,7 +113,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 ---
 
-## 🚀 Running the Project
+## Running the Project
 
 ### Option A — Local development (two terminals)
 
@@ -147,7 +147,7 @@ Both services start automatically. Same URLs as above.
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
 ### `POST /screen-resume`
 
@@ -198,7 +198,7 @@ curl -X POST http://localhost:8000/screen-resume \
 
 ---
 
-## 🧠 Prompt Engineering Notes
+## Prompt Engineering Notes
 
 The core of this project is a structured prompt sent to Gemini that instructs it to return **only a valid JSON object** — no markdown, no preamble. Key decisions:
 
@@ -209,7 +209,7 @@ The core of this project is a structured prompt sent to Gemini that instructs it
 
 ---
 
-## 🐳 Docker Details
+## Docker Details
 
 **`Dockerfile`** — builds the FastAPI backend image on `python:3.11-slim`, installs dependencies, and exposes port 8000.
 
@@ -222,7 +222,7 @@ The frontend depends on the backend service being healthy before starting.
 
 ---
 
-## 🔒 Environment Variables
+## Environment Variables
 
 | Variable | Required | Description |
 |---|---|---|
@@ -232,7 +232,7 @@ Never commit `.env` to version control. The `.gitignore` excludes it by default.
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 ```
 fastapi==0.111.0
@@ -246,7 +246,7 @@ python-dotenv==1.0.1
 
 ---
 
-## 🗺️ Possible Extensions
+## Possible Extensions
 
 - **Batch screening** — accept a ZIP of multiple resumes, return ranked results
 - **Score history** — persist results to SQLite or PostgreSQL for tracking over time
@@ -256,7 +256,7 @@ python-dotenv==1.0.1
 
 ---
 
-## 👤 Author
+## Author
 
 **Aryan Singh Bais**
 
@@ -265,6 +265,6 @@ python-dotenv==1.0.1
 
 ---
 
-## 📄 License
+## License
 
 MIT License — free to use, modify, and distribute.
