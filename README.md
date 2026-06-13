@@ -1,6 +1,25 @@
 # 🤖 AI Resume Screener
 
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4?logo=google&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
+![PyMuPDF](https://img.shields.io/badge/PyMuPDF-PDF%20Parsing-FF6B6B?logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?logo=pydantic&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 > A GenAI-powered tool that matches a candidate's resume (PDF) against a job description and returns a structured match score with strengths, gaps, and a summary — built with FastAPI, Google Gemini, Streamlit, and Docker.
+
+---
+
+## 🚀 Live Demo
+
+| Service | URL |
+|---|---|
+| 🎯 **Streamlit App** | [https://ai-resume-screener-pkfk2an7hcpyiqkvujuefn.streamlit.app/] |
+| ⚡ **FastAPI Swagger** | [https://ai-resume-screener-production-2564.up.railway.app/docs]|
+| 🐙 **GitHub** | [Aryansingh-B/AI-Resume-Screener](https://github.com/Aryansingh-B/AI-Resume-Screener) |
 
 ---
 
@@ -240,8 +259,9 @@ python-dotenv==1.0.1
 ## 👤 Author
 
 **Aryan Singh Bais**
-GitHub: [github.com/aryansinghbais](https://github.com/Aryansingh-B)
-Project: [github.com/aryansinghbais/ai-resume-screener](https://github.com/Aryansingh-B/AI-Resume-Screener)
+
+[![GitHub](https://img.shields.io/badge/GitHub-Aryansingh--B-181717?logo=github&logoColor=white)](https://github.com/Aryansingh-B)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aryansinghbais8/)
 
 ---
 
