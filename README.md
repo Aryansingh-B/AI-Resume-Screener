@@ -3,49 +3,114 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit&logoColor=white)
-![Google Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4?logo=google&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
-![PyMuPDF](https://img.shields.io/badge/PyMuPDF-PDF%20Parsing-FF6B6B?logoColor=white)
-![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?logo=pydantic&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-LLM-4285F4?logo=google&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Deployed-2496ED?logo=docker&logoColor=white)
 
-> A GenAI-powered tool that matches a candidate's resume (PDF) against a job description and returns a structured match score with strengths, gaps, and a summary — built with FastAPI, Google Gemini, Streamlit, and Docker.
+Upload a resume (PDF) + job description → Get an AI-powered match score with key strengths, gaps, and actionable feedback.
 
 ---
 
 ## Live Demo
 
-| Service | URL |
-|---|---|
-| **Streamlit App** | [https://ai-resume-screener-pkfk2an7hcpyiqkvujuefn.streamlit.app/] |
-| **FastAPI Swagger** | [https://ai-resume-screener-production-2564.up.railway.app/docs]|
-| **GitHub** | [Aryansingh-B/AI-Resume-Screener](https://github.com/Aryansingh-B/AI-Resume-Screener) |
+- **Frontend:** [Streamlit App](https://ai-resume-screener-pkfk2an7hcpyiqkvujuefn.streamlit.app/)
+- **API Docs:** [FastAPI Swagger](https://ai-resume-screener-production-2564.up.railway.app/docs)
+- **Code:** [GitHub Repo](https://github.com/Aryansingh-B/AI-Resume-Screener)
 
 ---
 
-## Project Overview
+## What I Built
 
-As a data scientist in 2026, knowing how to build and expose AI-powered pipelines is just as important as knowing how to train models. This project demonstrates:
+A GenAI pipeline that:
+1. Extracts text from PDF resumes
+2. Sends resume + job description to Google Gemini
+3. Returns structured JSON with a match score (0-100) + analysis
+4. Exposes it as a REST API (FastAPI)
+5. Built a user-friendly web interface (Streamlit)
+6. Deployed with Docker
 
-- **Prompt engineering** for structured JSON output from a large language model
-- **REST API design** with FastAPI and Pydantic for type-safe request/response models
-- **PDF ingestion** — a real-world data extraction task common in DS workflows
-- **Streamlit prototyping** for rapid AI tool development
-- **Containerisation** with Docker for reproducible, portable deployment
+**Why this matters:** This project shows I can take an AI model from concept → API → production deployment.
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| AI / LLM | Google Gemini 2.5 Flash API |
-| Backend API | FastAPI + Uvicorn |
-| PDF Parsing | PyMuPDF (fitz) |
-| Data Validation | Pydantic v2 |
-| Frontend UI | Streamlit |
-| Containerisation | Docker + Docker Compose |
-| Language | Python 3.11 |
+- **AI:** Google Gemini 2.5 Flash (prompt engineering for structured output)
+- **Backend:** FastAPI + Pydantic (type-safe API design)
+- **Frontend:** Streamlit (rapid prototyping)
+- **PDF Parsing:** PyMuPDF (text extraction)
+- **Deployment:** Docker + Railway (backend) + Streamlit Cloud (frontend)
+
+---
+
+## Quick Start
+
+### Requirements
+- Python 3.11+
+- Google Gemini API key (free at [aistudio.google.com](https://aistudio.google.com))
+
+### Setup
+
+1. **Clone & setup:**
+```bash
+git clone https://github.com/aryansinghbais/ai-resume-screener.git
+cd ai-resume-screener
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+pip install -r backend/requirements.txt && pip install streamlit requests
+```
+
+2. **Add your API key:**
+Create `backend/.env`:
+```
+GEMINI_API_KEY=your_key_here
+```
+
+3. **Run locally:**
+```bash
+# Terminal 1
+cd backend && uvicorn main:app --reload --port 8000
+
+# Terminal 2
+cd frontend && streamlit run app.py
+```
+
+Open http://localhost:8501
+
+### Or use Docker:
+```bash
+docker-compose up --build
+```
+
+---
+
+## How It Works
+
+**Input:**
+- Job description (text)
+- Resume (PDF file)
+
+**Output:**
+```json
+{
+  "score": 82,
+  "strengths": [
+    "Strong Python & ML experience",
+    "Familiar with data pipelines",
+    "Relevant internship background"
+  ],
+  "gaps": [
+    "No cloud platform experience",
+    "Limited deployment background"
+  ],
+  "summary": "Good fit. Recommend for interview."
+}
+```
+
+**Score guide:**
+- 90-100: Near-perfect fit
+- 70-89: Strong candidate, minor gaps
+- 50-69: Decent match, notable gaps
+- <50: Needs development
 
 ---
 
@@ -53,218 +118,44 @@ As a data scientist in 2026, knowing how to build and expose AI-powered pipeline
 
 ```
 ai-resume-screener/
-│
 ├── backend/
-│   ├── main.py              # FastAPI app — POST /screen-resume endpoint
-│   ├── gemini_service.py    # Gemini API integration + prompt engineering
-│   ├── schemas.py           # Pydantic request/response models
-│   ├── pdf_utils.py         # PDF text extraction using PyMuPDF
-│   ├── requirements.txt     # Python dependencies
-│   └── .env                 # GEMINI_API_KEY (not committed to git)
-│
+│   ├── main.py           # FastAPI app
+│   ├── gemini_service.py # LLM integration
+│   ├── pdf_utils.py      # PDF extraction
+│   └── schemas.py        # Pydantic models
 ├── frontend/
-│   └── app.py               # Streamlit UI — upload resume, display results
-│
-├── Dockerfile               # Containerise the FastAPI backend
-├── docker-compose.yml       # Orchestrate backend + frontend services
-├── .gitignore
+│   └── app.py            # Streamlit UI
+├── docker-compose.yml
 └── README.md
 ```
 
 ---
 
-## Setup & Installation
+## What I Learned
 
-### Prerequisites
-
-- Python 3.11+
-- A Google Gemini API key → [Get one free at aistudio.google.com](https://aistudio.google.com)
-- Docker (optional, for containerised deployment)
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/aryansinghbais/ai-resume-screener.git
-cd ai-resume-screener
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
-python -m venv venv
-source venv/bin/activate        # macOS/Linux
-venv\Scripts\activate           # Windows
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r backend/requirements.txt
-pip install streamlit requests
-```
-
-### 4. Add your API key
-
-Create `backend/.env`:
-
-```
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+✅ Prompt engineering for structured JSON output from LLMs  
+✅ REST API design with FastAPI + type validation  
+✅ Real-world data extraction (PDF parsing)  
+✅ End-to-end deployment (Docker, Railway, Streamlit Cloud)  
+✅ Working with multipart form requests  
 
 ---
 
-## Running the Project
+## Next Steps
 
-### Option A — Local development (two terminals)
-
-**Terminal 1 — Start the FastAPI backend:**
-
-```bash
-cd backend
-uvicorn main:app --reload --port 8000
-```
-
-**Terminal 2 — Start the Streamlit frontend:**
-
-```bash
-cd frontend
-streamlit run app.py
-```
-
-| Service | URL |
-|---|---|
-| Streamlit UI | http://localhost:8501 |
-| FastAPI docs (Swagger) | http://localhost:8000/docs |
-| FastAPI docs (ReDoc) | http://localhost:8000/redoc |
-
-### Option B — Docker (one command)
-
-```bash
-docker-compose up --build
-```
-
-Both services start automatically. Same URLs as above.
+Possible improvements:
+- Batch screening (multiple resumes at once)
+- Score history tracking (database)
+- Embedding-based pre-filtering (to reduce API calls)
+- Resume parser improvements (handle more formats)
 
 ---
 
-## API Reference
+## Connect
 
-### `POST /screen-resume`
-
-Accepts a job description and a resume PDF, returns a structured match analysis.
-
-**Request** — `multipart/form-data`
-
-| Field | Type | Description |
-|---|---|---|
-| `job_description` | `string` | The full text of the job posting |
-| `resume` | `file` (PDF) | The candidate's resume as a PDF |
-
-**Response** — `application/json`
-
-```json
-{
-  "score": 82,
-  "strengths": [
-    "Strong Python and ML pipeline experience",
-    "Familiarity with SQL and data wrangling",
-    "Previous internship in a data-driven role"
-  ],
-  "gaps": [
-    "No experience with cloud platforms (AWS/GCP)",
-    "Missing MLOps or model deployment skills"
-  ],
-  "summary": "Strong junior candidate with solid fundamentals. Would benefit from cloud and deployment experience before stepping into a senior role."
-}
-```
-
-**Score guide:**
-
-| Score | Meaning |
-|---|---|
-| 90–100 | Near-perfect fit |
-| 70–89 | Strong candidate, minor gaps |
-| 50–69 | Decent match, notable gaps |
-| 30–49 | Weak match, significant gaps |
-| 0–29 | Poor fit |
-
-**Test with curl:**
-
-```bash
-curl -X POST http://localhost:8000/screen-resume \
-  -F "job_description=We are hiring a Data Scientist with Python, ML, and SQL skills." \
-  -F "resume=@/path/to/resume.pdf"
-```
+- **GitHub:** [Aryansingh-B](https://github.com/Aryansingh-B)
+- **LinkedIn:** [aryansinghbais8](https://www.linkedin.com/in/aryansinghbais8/)
 
 ---
 
-## Prompt Engineering Notes
-
-The core of this project is a structured prompt sent to Gemini that instructs it to return **only a valid JSON object** — no markdown, no preamble. Key decisions:
-
-- The model is given explicit scoring rubrics so scores are consistent across runs
-- Output fields (`score`, `strengths`, `gaps`, `summary`) are strictly typed via Pydantic, catching any LLM hallucinations at the API boundary
-- Accidental markdown code fences (` ```json `) are stripped before parsing
-- The prompt passes the full resume text extracted from PDF, not page-by-page chunks, keeping context coherent for shorter resumes
-
----
-
-## Docker Details
-
-**`Dockerfile`** — builds the FastAPI backend image on `python:3.11-slim`, installs dependencies, and exposes port 8000.
-
-**`docker-compose.yml`** — defines two services:
-
-- `backend` — the FastAPI container, reads `.env` for the API key
-- `frontend` — a lightweight Python container that installs Streamlit at runtime and runs `app.py`
-
-The frontend depends on the backend service being healthy before starting.
-
----
-
-## Environment Variables
-
-| Variable | Required | Description |
-|---|---|---|
-| `GEMINI_API_KEY` | ✅ Yes | Your Google Gemini API key |
-
-Never commit `.env` to version control. The `.gitignore` excludes it by default.
-
----
-
-## Dependencies
-
-```
-fastapi==0.111.0
-uvicorn[standard]==0.29.0
-python-multipart==0.0.9
-pymupdf==1.24.3
-google-generativeai==0.5.4
-pydantic==2.7.1
-python-dotenv==1.0.1
-```
-
----
-
-## Possible Extensions
-
-- **Batch screening** — accept a ZIP of multiple resumes, return ranked results
-- **Score history** — persist results to SQLite or PostgreSQL for tracking over time
-- **Bias audit layer** — add a second Gemini call to flag potentially biased language in the job description
-- **Embedding similarity** — use sentence embeddings (e.g. `sentence-transformers`) as a pre-filter before the LLM call to reduce API costs
-- **Auth** — add API key authentication to the FastAPI endpoint for multi-user deployment
-
----
-
-## Author
-
-**Aryan Singh Bais**
-
-[![GitHub](https://img.shields.io/badge/GitHub-Aryansingh--B-181717?logo=github&logoColor=white)](https://github.com/Aryansingh-B)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aryansinghbais8/)
-
----
-
-## License
-
-MIT License — free to use, modify, and distribute.
+**MIT License** — free to use, fork, and modify.
