@@ -118,15 +118,22 @@ docker-compose up --build
 
 ```
 ai-resume-screener/
-├── backend/
-│   ├── main.py           # FastAPI app
-│   ├── gemini_service.py # LLM integration
-│   ├── pdf_utils.py      # PDF extraction
-│   └── schemas.py        # Pydantic models
-├── frontend/
-│   └── app.py            # Streamlit UI
-├── docker-compose.yml
-└── README.md
+│
+├── backend/                # FastAPI backend
+│   ├── main.py             # API entry point
+│   ├── gemini_service.py   # LLM integration
+│   ├── pdf_utils.py        # PDF parsing
+│   ├── schemas.py          # Data validation
+│   └── requirements.txt    # Dependencies
+│
+├──frontend/                # Streamlit frontend
+│   ├──app.py               # Web UI
+│   └──requirements.txt     # Dependencies
+│
+├──docker-compose.yml       # Container orchestration
+├──Dockerfile               # Backend image
+├──.gitignore               # Git exclusions
+└──README.md                # Documentation
 ```
 
 ---
