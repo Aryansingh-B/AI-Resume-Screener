@@ -1,54 +1,66 @@
-import os
 import json
-import re
+import os
 import logging
-from google import genai
-from dotenv import load_dotenv
-from schemas import ScreeningResult
+import google.generativeai as genai
 
-load_dotenv()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-api_key = os.getenv("GEMINI_API_KEY")
-logging.error(f"API KEY LOADED: {api_key[:10] if api_key else 'NOT FOUND'}")
+API_KEY = os.getenv("GEMINI_API_KEY")
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set!")
 
-client = genai.Client(api_key=api_key)
+logger.info(f"✓ API KEY LOADED: {API_KEY[:10]}...")
 
-def screen_resume(job_description: str, resume_text: str) -> ScreeningResult:
-    prompt = f"""
-You are an expert technical recruiter in 2026.
-Analyse the resume against the job description and return ONLY a JSON object.
-No markdown, no explanation — raw JSON only.
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel("gemini-2.5-flash")
 
-JSON format:
-{{
-  "score": <integer 0-100>,
-  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
-  "gaps": ["<gap 1>", "<gap 2>"],
-  "summary": "<one or two sentence overall verdict>"
-}}
+
+def screen_resume(job_description: str, resume_text: str) -> dict:
+    """Screen a resume against a job description using Gemini API."""
+    prompt = f"""Analyze this resume against the job description.
 
 JOB DESCRIPTION:
 {job_description}
 
 RESUME:
 {resume_text}
-"""
+
+Return ONLY valid JSON (no markdown):
+{{
+    "score": <integer 0-100>,
+    "strengths": ["strength 1", "strength 2", "strength 3"],
+    "gaps": ["gap 1", "gap 2", "gap 3"],
+    "summary": "<1-2 sentence assessment>"
+}}"""
+
     try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=prompt
-        )
-        raw = response.text.strip()
-        logging.error(f"RAW GEMINI: {raw[:500]}")
-
-        raw = re.sub(r"```(?:json)?", "", raw).strip()
-        match = re.search(r"\{.*\}", raw, re.DOTALL)
-        if match:
-            raw = match.group(0)
-
-        data = json.loads(raw)
-        return ScreeningResult(**data)
-
+        logger.info("Calling Gemini API...")
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
+        
+        if response_text.startswith("```"):
+            response_text = response_text.split("```")[1]
+            if response_text.startswith("json"):
+                response_text = response_text[4:]
+        
+        result = json.loads(response_text.strip())
+        logger.info(f"✓ Resume screened. Score: {result['score']}")
+        return result
+        
+    except json.JSONDecodeError as e:
+        logger.error(f"❌ JSON parse failed: {e}")
+        return {
+            "score": 0,
+            "strengths": ["Parse error"],
+            "gaps": ["API response format error"],
+            "summary": "Error processing resume."
+        }
     except Exception as e:
-        logging.error(f"GEMINI ERROR: {str(e)}")
-        raise
+        logger.error(f"❌ API error: {e}")
+        return {
+            "score": 0,
+            "strengths": ["API Error"],
+            "gaps": ["Failed to reach Gemini API"],
+            "summary": f"Error: {str(e)}"
+        }
